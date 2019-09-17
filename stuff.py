@@ -22,8 +22,8 @@ def attempt_login(username, password):
     return response.status_code == codes.ok
 
 def credential_stuffing_attack(creds):
-    print "hello"
-    print creds
+    print("hello")
+    print(creds)
     pass
 
 def main():
