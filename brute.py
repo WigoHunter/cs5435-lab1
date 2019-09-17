@@ -1,4 +1,5 @@
 from csv import reader
+from app.util.hash import hash_pbkdf2
 
 COMMON_PASSWORDS_PATH = 'common_passwords.txt'
 SALTED_BREACH_PATH = "app/scripts/breaches/salted_breach.csv"
@@ -16,7 +17,12 @@ def load_common_passwords():
     return pws
 
 def brute_force_attack(target_hash, target_salt):
-    pass
+    pws = load_common_passwords()
+    for pw in pws:
+        if (hash_pbkdf2(pw[0], target_salt) == target_hash):
+            print(pw[0])
+            return pw[0]
+    return None
 
 def main():
     salted_creds = load_breach(SALTED_BREACH_PATH)

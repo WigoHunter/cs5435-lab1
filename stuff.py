@@ -1,9 +1,11 @@
 from csv import reader
 from requests import post, codes
+from app.util.hash import hash_sha256
 
 LOGIN_URL = "http://localhost:8080/login"
 
 PLAINTEXT_BREACH_PATH = "app/scripts/breaches/plaintext_breach.csv"
+HASHED_BREACH_PATH = "app/scripts/breaches/hashed_breach.csv"
 
 def load_breach(fp):
     with open(fp) as f:
@@ -22,9 +24,9 @@ def attempt_login(username, password):
     return response.status_code == codes.ok
 
 def credential_stuffing_attack(creds):
-    for (cred in creds):
+    for cred in creds:
         username, password = cred[0], cred[1]
-        if (attempt_login(username, password)):
+        if (attempt_login(username, password) or attempt_login(username, hash_sha256(password))):
             print(cred)
 
 def main():
